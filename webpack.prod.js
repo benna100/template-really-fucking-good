@@ -1,32 +1,33 @@
-const path = require('path');
+const path = require("path");
 
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin'); //installed via npm
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin"); //installed via npm
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const SocialTags = require("social-tags-webpack-plugin");
 
-const buildPath = path.resolve(__dirname, 'dist');
+const buildPath = path.resolve(__dirname, "dist");
 
 module.exports = {
-    devtool: 'source-map',
-    entry: './src/index.js',
+    devtool: "source-map",
+    entry: "./src/index.js",
     output: {
-        filename: '[name].[hash:20].js',
+        filename: "[name].[hash:20].js",
         path: buildPath
     },
     node: {
-        fs: 'empty'
+        fs: "empty"
     },
     module: {
         rules: [
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader',
+                loader: "babel-loader",
 
                 options: {
-                    presets: ['env']
+                    presets: ["env"]
                 }
             },
             {
@@ -35,45 +36,44 @@ module.exports = {
                     use: [
                         {
                             // translates CSS into CommonJS
-                            loader: 'css-loader',
+                            loader: "css-loader",
                             options: {
                                 sourceMap: true
                             }
                         },
                         {
                             // Runs compiled CSS through postcss for vendor prefixing
-                            loader: 'postcss-loader',
+                            loader: "postcss-loader",
                             options: {
                                 sourceMap: true
                             }
                         },
                         {
                             // compiles Sass to CSS
-                            loader: 'sass-loader',
+                            loader: "sass-loader",
                             options: {
-                                outputStyle: 'expanded',
+                                outputStyle: "expanded",
                                 sourceMap: true,
                                 sourceMapContents: true
                             }
                         }
                     ],
-                    fallback: 'style-loader'
-                }),
-            }
-            ,
+                    fallback: "style-loader"
+                })
+            },
             {
                 test: /\.html$/,
-                use: ['html-loader']
+                use: ["html-loader"]
             },
             {
                 test: /\.(jpg|png)$/,
                 use: [
                     {
-                        loader: 'file-loader',
+                        loader: "file-loader",
                         options: {
-                            name: '[name].[ext]',
-                            outputPath: 'assets/',
-                            publicPath: 'assets/'
+                            name: "[name].[ext]",
+                            outputPath: "assets/",
+                            publicPath: "assets/"
                         }
                     }
                 ]
@@ -82,25 +82,25 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './index.html',
+            template: "./index.html",
             // Inject the js bundle at the end of the body of the given template
-            inject: 'body',
+            inject: "body"
         }),
         new CleanWebpackPlugin(buildPath),
         new FaviconsWebpackPlugin({
             // Your source logo
-            logo: './src/assets/icon.png',
+            logo: "./src/assets/favicon.png",
             // The prefix for all image files (might be a folder or a name)
-            prefix: 'icons-[hash]/',
+            prefix: "icons-[hash]/",
             // Generate a cache file with control hashes and
             // don't rebuild the favicons until those hashes change
             persistentCache: true,
             // Inject the html into the html-webpack-plugin
             inject: true,
             // favicon background color (see https://github.com/haydenbleasel/favicons#usage)
-            background: '#fff',
+            background: "#fff",
             // favicon app title (see https://github.com/haydenbleasel/favicons#usage)
-            title: 'game-of-life}}',
+            title: "game-of-life}}",
 
             // which icons should be generated (see https://github.com/haydenbleasel/favicons#usage)
             icons: {
@@ -116,20 +116,45 @@ module.exports = {
                 windows: false
             }
         }),
-        new ExtractTextPlugin('styles.[md5:contenthash:hex:20].css', {
+        new ExtractTextPlugin("styles.[md5:contenthash:hex:20].css", {
             allChunks: true
         }),
         new OptimizeCssAssetsPlugin({
-            cssProcessor: require('cssnano'),
+            cssProcessor: require("cssnano"),
             cssProcessorOptions: {
                 map: {
-                    inline: false,
+                    inline: false
                 },
+                zindex: false,
                 discardComments: {
                     removeAll: true
                 }
             },
             canPrint: true
+        }),
+        new SocialTags({
+            appUrl: "https://benna100.github.io/random-parti/",
+            facebook: {
+                "fb:app_id": "123456789",
+                "og:url": "https://github-username.github.io/your-repo-name/",
+                "og:type": "website",
+                "og:title": "Facebook title",
+                "og:image": "./src/assets/social.png",
+                "og:description": "Facebook description",
+                "og:site_name": "Your sitename",
+                "og:locale": "da",
+                "og:article:author": "Your name"
+            },
+            twitter: {
+                "twitter:card": "summary",
+                "twitter:site": "@site_account",
+                "twitter:creator": "@twitterhandle",
+                "twitter:url":
+                    "https://github-username.github.io/your-repo-name/",
+                "twitter:title": "Twitter title",
+                "twitter:description": "Twitter description",
+                "twitter:image": "./src/assets/social.png"
+            }
         })
     ]
 };
