@@ -9,6 +9,10 @@ const SocialTags = require("social-tags-webpack-plugin");
 
 const buildPath = path.resolve(__dirname, "dist");
 
+const appUrl = "https://github-username.github.io/your-repo-name/";
+const appTitle = "Title";
+const appDescription = "App description";
+
 module.exports = {
     devtool: "source-map",
     entry: "./src/index.js",
@@ -100,7 +104,7 @@ module.exports = {
             // favicon background color (see https://github.com/haydenbleasel/favicons#usage)
             background: "#fff",
             // favicon app title (see https://github.com/haydenbleasel/favicons#usage)
-            title: "game-of-life}}",
+            title: appTitle,
 
             // which icons should be generated (see https://github.com/haydenbleasel/favicons#usage)
             icons: {
@@ -133,27 +137,26 @@ module.exports = {
             canPrint: true
         }),
         new SocialTags({
-            appUrl: "https://benna100.github.io/random-parti/",
+            appUrl: appUrl,
             facebook: {
                 "fb:app_id": "123456789",
-                "og:url": "https://github-username.github.io/your-repo-name/",
+                "og:url": appUrl,
                 "og:type": "website",
-                "og:title": "Facebook title",
-                "og:image": "./src/assets/social.png",
-                "og:description": "Facebook description",
-                "og:site_name": "Your sitename",
+                "og:title": appTitle,
+                "og:image": "./src/assets/social-facebook.png",
+                "og:description": appDescription,
+                "og:site_name": appTitle,
                 "og:locale": "da",
                 "og:article:author": "Your name"
             },
             twitter: {
-                "twitter:card": "summary",
+                "twitter:card": "summary_large_image",
                 "twitter:site": "@site_account",
                 "twitter:creator": "@twitterhandle",
-                "twitter:url":
-                    "https://github-username.github.io/your-repo-name/",
-                "twitter:title": "Twitter title",
-                "twitter:description": "Twitter description",
-                "twitter:image": "./src/assets/social.png"
+                "twitter:url": appUrl,
+                "twitter:title": appTitle,
+                "twitter:description": appDescription,
+                "twitter:image": "./src/assets/social-twitter.png"
             }
         })
     ]
